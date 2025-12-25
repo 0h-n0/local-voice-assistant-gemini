@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-      - initial-commit # Also run on initial-commit for scaffolding
+      - initial-commit
+      - 003-llm-service
   pull_request:
     branches:
       - main
@@ -21,20 +22,20 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: 'package-lock.json' # Root package-lock.json will manage frontend lock file
+          cache-dependency-path: 'package-lock.json'
 
       - name: Install Frontend Dependencies
-        run: npm install # Install root dependencies, which includes frontend
+        run: npm install
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: '3.11'
-          cache: 'uv'
+          enable-cache: true
           cache-dependency-path: 'backend/requirements.in'
 
       - name: Install Python Dependencies
-        run: cd backend && uv venv --python 3.11 && . .venv/bin/activate && uv pip install -r requirements.in
+        run: cd backend && uv venv && . .venv/bin/activate && uv pip install -r requirements.in
       
       - name: Run Lint
         run: npm run lint
