@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+pytest
+httpx
+nemo_toolkit[asr]
+python-multipart
+websockets
+uvloop
+prometheus_client
+fastapi-limiter
+soundfile
+pydub
+python-json-logger

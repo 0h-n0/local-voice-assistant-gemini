@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  title: Local Voice Assistant API
+  description: API for the Local Voice Assistant project.
+  version: 1.0.0
+
+paths:
+  /health:
+    get:
+      summary: Health Check
+      description: Returns the health status of the API.
+      responses:
+        '200':
+          description: API is healthy.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"

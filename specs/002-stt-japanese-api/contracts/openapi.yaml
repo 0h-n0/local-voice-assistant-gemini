@@ -1,0 +1,108 @@
+openapi: 3.0.0
+info:
+  title: Japanese STT API
+  description: API for Japanese Speech-to-Text transcription using reazon-research/reazonspeech-nemo-v2.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key # Or use 'Authorization' header with 'Bearer <API_KEY>'
+
+  schemas:
+    TranscriptionResult:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The transcribed Japanese text.
+        confidence:
+          type: number
+          format: float
+          nullable: true
+          description: A confidence score for the transcription (0.0 to 1.0).
+        is_final:
+          type: boolean
+          description: True if this is a final segment, false for partial.
+        start_timestamp:
+          type: number
+          format: float
+          description: Start time of the speech segment in seconds.
+        end_timestamp:
+          type: number
+          format: float
+          description: End time of the speech segment in seconds.
+      required:
+        - text
+        - is_final
+        - start_timestamp
+        - end_timestamp
+
+paths:
+  /transcribe/file:
+    post:
+      summary: Transcribe Audio File
+      description: Uploads an audio file and returns its Japanese text transcription.
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                audio_file:
+                  type: string
+                  format: binary
+                  description: The audio file to transcribe (WAV or MP3, max 50MB).
+      responses:
+        '200':
+          description: Successful transcription.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranscriptionResult'
+        '400':
+          description: Invalid audio format or file size.
+        '401':
+          description: Unauthorized - Missing or invalid API Key.
+        '429':
+          description: Too Many Requests - Rate limit exceeded.
+
+  /transcribe/stream:
+    get:
+      summary: Transcribe Live Audio Stream
+      description: Establishes a WebSocket connection for live audio input and returns continuous Japanese text transcription.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: api_key
+          schema:
+            type: string
+          required: true
+          description: API Key for authentication.
+      responses:
+        '101':
+          description: WebSocket connection established.
+        '401':
+          description: Unauthorized - Missing or invalid API Key.
+        '429':
+          description: Too Many Requests - Rate limit exceeded.
+      x-webso_ckets:
+        message:
+          type: string
+          format: binary
+          description: Raw audio data chunks (e.g., 16kHz, mono, 16-bit PCM).
+        response:
+          $ref: '#/components/schemas/TranscriptionResult'
