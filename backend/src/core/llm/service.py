@@ -11,6 +11,7 @@ from src.utils.logging import log_llm_usage
 
 class LLMService:
     """Service for handling LLM requests."""
+
     async def get_chat_completion(self, request: LLMRequest) -> LLMResponse:
         """Get a non-streaming chat completion."""
         try:

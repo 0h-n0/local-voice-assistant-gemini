@@ -8,6 +8,7 @@ load_dotenv()
 
 class OpenAIClient:
     """Wrapper for OpenAI AsyncOpenAI client."""
+
     def __init__(self):
         """Initialize the client with API key from environment."""
         self.api_key = os.getenv("OPENAI_API_KEY")

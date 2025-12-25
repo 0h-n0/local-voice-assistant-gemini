@@ -83,3 +83,4 @@ async def transcribe_stream(
         await websocket.send_json({"error": str(e)})
     finally:
         await websocket.close()
+

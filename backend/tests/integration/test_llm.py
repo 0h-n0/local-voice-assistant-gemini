@@ -57,11 +57,11 @@ async def test_get_chat_completion_stream():
             'data: {"id":"1","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":"!"},"finish_reason":"stop"}]}\n\n',
             'data: [DONE]\n\n'
         ]
-        
+
         async def stream_gen():
             for chunk in stream_chunks:
                 yield chunk.encode("utf-8")
-        
+
         respx.post("https://api.openai.com/v1/chat/completions").mock(return_value=Response(
             200,
             content=stream_gen(),

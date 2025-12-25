@@ -58,23 +58,45 @@ def test_successful_stream_transcription():
         assert data["is_final"] is True
 
 def test_missing_api_key_stream():
+
     app.dependency_overrides.clear()
+
     with pytest.raises(Exception):
-        with client.websocket_connect("/api/v1/transcribe/stream") as websocket:
+
+        with client.websocket_connect("/api/v1/transcribe/stream"):
+
             pass
+
+
 
 def test_invalid_api_key_stream():
+
     app.dependency_overrides.clear()
+
     with pytest.raises(Exception):
-        with client.websocket_connect("/api/v1/transcribe/stream?api_key=wrong_key") as websocket:
+
+        with client.websocket_connect("/api/v1/transcribe/stream?api_key=wrong_key"):
+
             pass
 
+
+
 def test_rate_limiting_stream():
+
     async def mock_rate_limiter_fail():
+
         raise HTTPException(status_code=429, detail="Rate limit exceeded")
+
+    
 
     app.dependency_overrides[rate_limit_dependency] = mock_rate_limiter_fail
 
+    
+
     with pytest.raises(Exception):
-        with client.websocket_connect("/api/v1/transcribe/stream?api_key=test_api_key") as websocket:
+
+        with client.websocket_connect("/api/v1/transcribe/stream?api_key=test_api_key"):
+
             pass
+
+

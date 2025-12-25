@@ -1,4 +1,4 @@
-"LLM API endpoints."
+"""LLM API endpoints."""
 import json
 
 from fastapi import APIRouter, HTTPException

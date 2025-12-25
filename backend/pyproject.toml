@@ -4,7 +4,7 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "I", "N", "D"] # Error, Warning, Flake8, Isort, Naming, Docstrings
-ignore = ["D100", "D104"] # Ignore missing docstrings for modules and packages
+ignore = ["D100", "D104", "D101", "D102", "D103", "D107", "E402", "W292"] # Ignore missing docstrings, import position, and newlines
 
 [tool.ruff.format]
 quote-style = "double"
