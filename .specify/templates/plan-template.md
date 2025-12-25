@@ -31,7 +31,13 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- **I. Library-First**: Does the feature start as a self-contained library?
+- **II. CLI Interface**: Does the library expose its functionality via a CLI?
+- **III. Test-First**: Are tests written before the implementation?
+- **IV. Integration Testing**: Are integration tests planned for critical pathways?
+- **V. Observability**: Is structured logging included in the plan?
+- **VI. Semantic Versioning**: Is the versioning scheme clear for any new or updated APIs/packages?
+- **VII. Simplicity (YAGNI)**: Is the proposed solution the simplest possible way to meet requirements?
 
 ## Project Structure
 

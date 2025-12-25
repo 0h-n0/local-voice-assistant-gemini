@@ -1,50 +1,59 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: 0.0.0 -> 1.0.0
+- Added sections:
+  - Core Principles (7 principles added)
+  - Development Workflow
+  - Security
+  - Governance
+- Removed sections: None
+- Templates requiring updates:
+  - ✅ .specify/templates/plan-template.md
+  - ⚠ .specify/templates/spec-template.md (Manual check recommended)
+  - ⚠ .specify/templates/tasks-template.md (Manual check recommended)
+  - ⚠ .gemini/commands/*.toml (Manual check recommended for any hardcoded principles)
+- Follow-up TODOs:
+  - TODO(RATIFICATION_DATE): Set the initial ratification date for this constitution.
+-->
+# local-voice-assistant-gemini Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Library-First
+Every feature starts as a standalone library. Libraries must be self-contained, independently testable, and have a clear, documented purpose. Rationale: Promotes modularity, reusability, and clear ownership.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. CLI Interface
+Every library MUST expose its primary functionality via a command-line interface (CLI). The CLI should follow standard conventions for arguments, flags, and input/output streams (stdin/stdout/stderr). Rationale: Ensures components are easily scriptable, testable, and composable.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Test-First
+All production code MUST be written using a Test-Driven Development (TDD) approach. This means writing a failing test before writing the corresponding implementation code. Rationale: Guarantees test coverage, improves design quality, and provides living documentation.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Integration Testing
+Integration tests are required for critical pathways, including but not limited to: API contracts, interactions between services, and data schema integrity. Rationale: Verifies that components work together as expected, catching errors that unit tests miss.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Observability
+All components MUST provide structured logs (e.g., JSON) for monitoring and debugging. Logs should include contextually relevant information like request IDs or correlation tokens. Rationale: Enables effective troubleshooting and monitoring in production environments.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### VI. Semantic Versioning
+The project MUST adhere to Semantic Versioning 2.0.0 (https://semver.org/) for all public APIs and packages. Breaking changes MUST be accompanied by a MAJOR version increase. Rationale: Provides clear, predictable versioning for consumers of the project's components.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### VII. Simplicity (YAGNI)
+Always implement the simplest possible solution that meets the current requirements. Avoid adding functionality based on anticipated future needs ("You Ain't Gonna Need It"). Rationale: Prevents over-engineering, reduces complexity, and keeps the codebase lean.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+All code changes must be submitted via a Pull Request (PR). PRs must be reviewed and approved by at least one other team member before being merged. Automated checks (linting, testing, etc.) must pass before a PR is eligible for review.
+
+## Security
+
+Security is a primary concern. All code should be written with security best practices in mind. Dependencies should be regularly scanned for vulnerabilities. Any identified vulnerabilities must be addressed in a timely manner.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution is the supreme governing document for this project. It can only be amended via a formal proposal and review process, documented in a PR against this file.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+- All development activities, code reviews, and architectural decisions MUST align with the principles outlined herein.
+- Any deviation from these principles requires explicit, documented justification and approval.
+- The amendment process requires a PR, review, and approval from the project maintainers.
+
+**Version**: 1.0.0 | **Ratified**: TODO(RATIFICATION_DATE): Set the initial ratification date for this constitution. | **Last Amended**: 2025-12-25
