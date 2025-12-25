@@ -38,7 +38,7 @@
 - **V. Observability**: Is structured logging included in the plan?
 - **VI. Semantic Versioning**: Is the versioning scheme clear for any new or updated APIs/packages?
 - **VII. Simplicity (YAGNI)**: Is the proposed solution the simplest possible way to meet requirements?
-- **Tooling**: Does the project use `uv`, `pydantic`, and `ruff` as specified?
+- **Technology Stack and Tooling**: Does the project adhere to the specified technology stack (Next.js/FastAPI) and tooling (`uv`, `pydantic`, `ruff`)?
 
 ## Project Structure
 

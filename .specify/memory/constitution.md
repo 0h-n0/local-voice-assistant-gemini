@@ -1,15 +1,12 @@
 <!--
 Sync Impact Report:
-- Version change: 1.0.0 -> 1.1.0
+- Version change: 1.1.0 -> 1.2.0
 - Added sections:
+  - Technology Stack and Tooling
+- Removed sections:
   - Tooling
-- Modified sections:
-  - Development Workflow
-- Removed sections: None
 - Templates requiring updates:
   - ✅ .specify/templates/plan-template.md
-  - ⚠ .specify/templates/spec-template.md (Manual check recommended)
-  - ⚠ .specify/templates/tasks-template.md (Manual check recommended)
 - Follow-up TODOs:
   - TODO(RATIFICATION_DATE): Set the initial ratification date for this constitution.
 -->
@@ -38,10 +35,12 @@ The project MUST adhere to Semantic Versioning 2.0.0 (https://semver.org/) for a
 ### VII. Simplicity (YAGNI)
 Always implement the simplest possible solution that meets the current requirements. Avoid adding functionality based on anticipated future needs ("You Ain't Gonna Need It"). Rationale: Prevents over-engineering, reduces complexity, and keeps the codebase lean.
 
-## Tooling
+## Technology Stack and Tooling
 
+- **Frontend**: The frontend MUST be built using Next.js with React and TypeScript.
+- **Backend**: The backend API MUST be built using FastAPI.
 - **Package Management**: This project MUST use `uv` for package management.
-- **Type Checking**: Runtime type checking MUST be implemented using `pydantic`.
+- **Type Checking**: Runtime type checking on the backend MUST be implemented using `pydantic`.
 - **Linting**: Code MUST be linted using `ruff`.
 
 ## Development Workflow
@@ -65,4 +64,4 @@ This constitution is the supreme governing document for this project. It can onl
 - Any deviation from these principles requires explicit, documented justification and approval.
 - The amendment process requires a PR, review, and approval from the project maintainers.
 
-**Version**: 1.1.0 | **Ratified**: TODO(RATIFICATION_DATE): Set the initial ratification date for this constitution. | **Last Amended**: 2025-12-25
+**Version**: 1.2.0 | **Ratified**: TODO(RATIFICATION_DATE): Set the initial ratification date for this constitution. | **Last Amended**: 2025-12-25
