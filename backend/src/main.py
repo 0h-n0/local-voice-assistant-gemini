@@ -1,4 +1,3 @@
-
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,17 +10,17 @@ from .middlewares.metrics import (  # Import MetricsMiddleware class and metrics
 )
 from .middlewares.rate_limiter import initialize_rate_limiter
 
-load_dotenv() # Load environment variables from .env file
+load_dotenv()  # Load environment variables from .env file
 
 app = FastAPI(
     title="Local Voice Assistant API",
     description="API for Japanese Speech-to-Text and LLM services.",
     version="1.0.0",
-    on_startup=[initialize_rate_limiter] # Initialize rate limiter on startup
+    on_startup=[initialize_rate_limiter],  # Initialize rate limiter on startup
 )
 
 origins = [
-    "http://localhost:3000", # Allow frontend during development
+    "http://localhost:3000",  # Allow frontend during development
     # Add other allowed origins in production
 ]
 

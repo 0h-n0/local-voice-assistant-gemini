@@ -13,18 +13,19 @@ router = APIRouter()
 MAX_FILE_SIZE_MB = 50
 MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 
+
 @router.post(
     "/transcribe/file",
     response_model=TranscriptionResult,
     status_code=status.HTTP_200_OK,
-    dependencies=[Depends(rate_limit_dependency)] # Use shared rate limit dependency
+    dependencies=[Depends(rate_limit_dependency)],  # Use shared rate limit dependency
 )
 async def transcribe_file(
     api_key: Annotated[str, Depends(get_api_key)],
     audio_file: UploadFile = File(...),
 ):
     # Validate file type
-    if audio_file.content_type not in ["audio/wav", "audio/mpeg"]: # audio/mpeg for MP3
+    if audio_file.content_type not in ["audio/wav", "audio/mpeg"]:  # audio/mpeg for MP3
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Unsupported media type: {audio_file.content_type}. Only WAV and MP3 are supported.",
@@ -40,7 +41,7 @@ async def transcribe_file(
 
     # Convert audio to WAV format compatible with Nemo
     try:
-        wav_audio_bytes = convert_audio_to_wav(file_contents, audio_file.content_type.split('/')[-1])
+        wav_audio_bytes = convert_audio_to_wav(file_contents, audio_file.content_type.split("/")[-1])
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Audio conversion failed: {e}")
 
@@ -48,7 +49,7 @@ async def transcribe_file(
         transcribed_text = stt_processor.transcribe(wav_audio_bytes)
 
         # Dummy timestamps and confidence for now
-        duration = get_audio_duration(file_contents, audio_file.content_type.split('/')[-1])
+        duration = get_audio_duration(file_contents, audio_file.content_type.split("/")[-1])
 
         return TranscriptionResult(
             text=transcribed_text,
@@ -60,14 +61,16 @@ async def transcribe_file(
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
+
 @router.websocket("/transcribe/stream")
 async def transcribe_stream(
     websocket: WebSocket,
     api_key: str = Depends(get_api_key),
-    rate_limit: None = Depends(rate_limit_dependency) # Use shared rate limit dependency
+    rate_limit: None = Depends(rate_limit_dependency),  # Use shared rate limit dependency
 ):
     await websocket.accept()
     try:
+
         async def audio_generator():
             while True:
                 data = await websocket.receive_bytes()
@@ -83,4 +86,3 @@ async def transcribe_stream(
         await websocket.send_json({"error": str(e)})
     finally:
         await websocket.close()
-

@@ -1,4 +1,5 @@
 """LLM models."""
+
 from typing import List, Literal, Optional
 
 from pydantic import BaseModel, Field
@@ -10,6 +11,7 @@ class ChatMessage(BaseModel):
     role: Literal["system", "user", "assistant"]
     content: str
 
+
 class LLMRequest(BaseModel):
     """LLM request model."""
 
@@ -18,12 +20,14 @@ class LLMRequest(BaseModel):
     max_tokens: Optional[int] = None
     stream: bool = False
 
+
 class LLMResponseUsage(BaseModel):
     """LLM response usage model."""
 
     prompt_tokens: int
     completion_tokens: int
     total_tokens: int
+
 
 class LLMResponse(BaseModel):
     """LLM response model."""

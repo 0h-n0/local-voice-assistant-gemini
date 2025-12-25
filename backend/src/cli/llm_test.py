@@ -18,15 +18,13 @@ async def main():
         return
 
     prompt = input("Enter prompt: ")
-    request = LLMRequest(
-        messages=[ChatMessage(role="user", content=prompt)],
-        stream=True
-    )
+    request = LLMRequest(messages=[ChatMessage(role="user", content=prompt)], stream=True)
 
     print("\nAssistant: ", end="", flush=True)
     async for chunk in llm_service.stream_chat_completion(request):
         print(chunk, end="", flush=True)
     print("\n")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

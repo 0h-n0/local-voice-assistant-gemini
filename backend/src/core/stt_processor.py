@@ -5,9 +5,10 @@ from nemo.collections.asr.models import ASRModel
 
 logger = logging.getLogger(__name__)
 
+
 class STTProcessor:
     _instance = None
-    _model: ASRModel = None # Initialize to None
+    _model: ASRModel = None  # Initialize to None
 
     def __new__(cls):
         if cls._instance is None:
@@ -16,8 +17,7 @@ class STTProcessor:
         return cls._instance
 
     def _load_model_if_needed(self):
-        """Loads the reazonspeech-nemo-v2 model if it hasn't been loaded yet.
-        """
+        """Loads the reazonspeech-nemo-v2 model if it hasn't been loaded yet."""
         if self._model is None:
             logger.info("Lazily loading reazonspeech-nemo-v2 model...")
             try:
@@ -29,9 +29,8 @@ class STTProcessor:
                 raise
 
     def transcribe(self, audio_bytes: bytes) -> str:
-        """Transcribes given audio bytes (expected to be in WAV format).
-        """
-        self._load_model_if_needed() # Ensure model is loaded before transcribing
+        """Transcribes given audio bytes (expected to be in WAV format)."""
+        self._load_model_if_needed()  # Ensure model is loaded before transcribing
 
         if self._model is None:
             raise RuntimeError("STT model not loaded.")
@@ -52,9 +51,15 @@ class STTProcessor:
         """Placeholder for streaming transcription.
         This would involve a more complex interaction with Nemo's streaming API.
         """
-        self._load_model_if_needed() # Ensure model is loaded before streaming transcription
+        self._load_model_if_needed()  # Ensure model is loaded before streaming transcription
         logger.info("Simulating streaming transcription...")
-        yield {"text": "ストリーミング転写のシミュレーション", "is_final": False, "start_timestamp": 0.0, "end_timestamp": 1.0}
+        yield {
+            "text": "ストリーミング転写のシミュレーション",
+            "is_final": False,
+            "start_timestamp": 0.0,
+            "end_timestamp": 1.0,
+        }
         yield {"text": "これは最終的な結果です", "is_final": True, "start_timestamp": 1.0, "end_timestamp": 2.5}
+
 
 stt_processor = STTProcessor()

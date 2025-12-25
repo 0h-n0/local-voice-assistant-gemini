@@ -6,6 +6,7 @@ from src.main import app
 
 client = TestClient(app)
 
+
 def test_health_check():
     """Tests if the /health endpoint returns a 200 OK status code
     and the expected JSON response.
