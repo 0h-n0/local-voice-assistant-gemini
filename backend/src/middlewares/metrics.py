@@ -1,8 +1,9 @@
+import time
+
+from prometheus_client import Counter, Histogram, generate_latest
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
-from prometheus_client import Counter, Histogram, generate_latest
-import time
 
 REQUEST_COUNT = Counter(
     "http_requests_total", "Total HTTP requests", ["method", "endpoint", "status_code"]
@@ -28,7 +29,6 @@ class MetricsMiddleware(BaseHTTPMiddleware):
         return response
 
 def metrics_endpoint(request: Request):
-    """
-    Exposes Prometheus metrics at /metrics endpoint.
+    """Exposes Prometheus metrics at /metrics endpoint.
     """
     return Response(content=generate_latest(), media_type="text/plain")

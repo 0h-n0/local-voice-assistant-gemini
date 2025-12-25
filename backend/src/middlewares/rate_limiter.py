@@ -1,11 +1,12 @@
-from fastapi import Request, HTTPException
+import os
+
+from fastapi import HTTPException, Request
 from fastapi.responses import JSONResponse
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.types import ASGIApp
-from redis.asyncio import Redis
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
-import os
+from redis.asyncio import Redis
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.types import ASGIApp
 
 # Initialize Redis client (replace with actual Redis URL if not localhost)
 redis_client: Redis = Redis(host=os.getenv("REDIS_HOST", "localhost"), port=int(os.getenv("REDIS_PORT", 6379)), db=0, encoding="utf-8", decode_responses=True)
@@ -15,8 +16,7 @@ async def initialize_rate_limiter():
     await FastAPILimiter.init(redis_client)
 
 async def get_client_id(request: Request):
-    """
-    Identifies the client for rate limiting.
+    """Identifies the client for rate limiting.
     Uses API Key if present, otherwise falls back to client IP.
     """
     api_key = request.headers.get("X-API-Key") or request.query_params.get("api_key")
@@ -27,7 +27,7 @@ async def get_client_id(request: Request):
 # Define default rate limit
 DEFAULT_RATE_LIMIT = "60/minute" # 60 requests per minute
 
-# Middleware to apply rate limiting. 
+# Middleware to apply rate limiting.
 # This is a placeholder; actual application would involve
 # `@limiter.limit` decorators on specific routes.
 class RateLimitMiddleware(BaseHTTPMiddleware):
@@ -52,5 +52,5 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
 # Dependency for applying rate limit to a route
 # Example usage: @router.post("/my-endpoint", dependencies=[Depends(rate_limit_dependency)])
-rate_limit_dependency = RateLimiter(times=int(DEFAULT_RATE_LIMIT.split('/')[0]), 
+rate_limit_dependency = RateLimiter(times=int(DEFAULT_RATE_LIMIT.split('/')[0]),
                                      minutes=int(DEFAULT_RATE_LIMIT.split('/')[1].replace('minute', '1')))

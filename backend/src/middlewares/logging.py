@@ -1,10 +1,9 @@
 import logging
-import json
+import time
+
 from pythonjsonlogger import jsonlogger
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
-from starlette.responses import Response
-import time
 
 # Configure JSON logger
 logger = logging.getLogger(__name__)
@@ -21,7 +20,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         start_time = time.time()
         response = await call_next(request)
         process_time = time.time() - start_time
-        
+
         log_dict = {
             "request_id": request.headers.get("X-Request-ID"), # Assuming a request ID is passed
             "method": request.method,
@@ -31,6 +30,6 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             "client_ip": request.client.host if request.client else "unknown",
             # Add more relevant info as needed, e.g., audio length for STT endpoints
         }
-        
+
         logger.info("HTTP Request", extra=log_dict)
         return response

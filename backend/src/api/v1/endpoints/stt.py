@@ -1,12 +1,12 @@
-from fastapi import APIRouter, File, UploadFile, Depends, HTTPException, status, WebSocket, WebSocketDisconnect
 from typing import Annotated
+
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, WebSocket, WebSocketDisconnect, status
+
 from src.api.v1.dependencies import get_api_key
 from src.core.stt_processor import stt_processor
+from src.middlewares.rate_limiter import rate_limit_dependency  # Import shared rate limit dependency
 from src.models.stt_models import TranscriptionResult
-from src.utils.audio_utils import get_audio_duration, convert_audio_to_wav # Import convert_audio_to_wav
-import io
-import os
-from src.middlewares.rate_limiter import rate_limit_dependency # Import shared rate limit dependency
+from src.utils.audio_utils import convert_audio_to_wav, get_audio_duration  # Import convert_audio_to_wav
 
 router = APIRouter()
 
@@ -46,10 +46,10 @@ async def transcribe_file(
 
     try:
         transcribed_text = stt_processor.transcribe(wav_audio_bytes)
-        
+
         # Dummy timestamps and confidence for now
         duration = get_audio_duration(file_contents, audio_file.content_type.split('/')[-1])
-        
+
         return TranscriptionResult(
             text=transcribed_text,
             confidence=None,

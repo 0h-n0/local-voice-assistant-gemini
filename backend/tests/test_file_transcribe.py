@@ -1,17 +1,17 @@
-from fastapi.testclient import TestClient
-from src.main import app
-from src.api.v1.dependencies import get_api_key
-from unittest.mock import patch, MagicMock
-import pytest
-import os
 import io
-import soundfile as sf
+from unittest.mock import MagicMock, patch
+
 import numpy as np
-from src.core.stt_processor import STTProcessor # Import the class directly for patching
-from src.middlewares.rate_limiter import RateLimiter
+import pytest
+import soundfile as sf
 from fastapi import HTTPException
-from src.models.stt_models import TranscriptionResult
-from fastapi_limiter import FastAPILimiter # Import FastAPILimiter
+from fastapi.testclient import TestClient
+from fastapi_limiter import FastAPILimiter  # Import FastAPILimiter
+
+from src.api.v1.dependencies import get_api_key
+from src.core.stt_processor import STTProcessor  # Import the class directly for patching
+from src.main import app
+
 
 # Override API key dependency for testing
 def override_get_api_key():
@@ -42,22 +42,21 @@ def create_large_dummy_audio(filename="large_dummy_audio.wav", size_mb=60, sr=16
 # --- Tests ---
 @pytest.fixture(autouse=True, scope="session")
 def mock_stt_processor_singleton_and_init(monkeypatch):
-    """
-    Mocks the STTProcessor class and its singleton instance to prevent actual model loading.
+    """Mocks the STTProcessor class and its singleton instance to prevent actual model loading.
     This fixture runs once per test session.
     """
     mock_instance = MagicMock(spec=STTProcessor)
     mock_instance.transcribe.return_value = "これはテストの文字起こしです"
-    
+
     async def mock_transcribe_stream_async_generator(*args, **kwargs):
         yield {"text": "ストリーミングモック", "is_final": False, "start_timestamp": 0.0, "end_timestamp": 0.5}
         yield {"text": "最終結果", "is_final": True, "start_timestamp": 0.5, "end_timestamp": 1.0}
-    
+
     mock_instance.transcribe_stream.return_value = mock_transcribe_stream_async_generator()
-    
+
     # Patch the STTProcessor class itself so that STTProcessor() returns our mock instance
     monkeypatch.setattr('src.core.stt_processor.STTProcessor', MagicMock(return_value=mock_instance))
-    
+
     # Also patch the module-level singleton instance if it's already created
     monkeypatch.setattr('src.core.stt_processor.stt_processor', mock_instance)
 
@@ -70,8 +69,7 @@ def mock_stt_processor_singleton_and_init(monkeypatch):
 
 @pytest.fixture(autouse=True)
 def setup_env_vars(monkeypatch):
-    """
-    Sets up environment variables for tests.
+    """Sets up environment variables for tests.
     """
     # Set a test API key for the environment
     monkeypatch.setenv("API_KEY", "test_api_key")
@@ -133,7 +131,7 @@ def test_unsupported_audio_format():
 
 def test_file_size_exceeds_limit(mock_stt_processor_singleton_and_init):
     large_audio_buffer, filename = create_large_dummy_audio()
-    
+
     # This test currently relies on actual implementation of file size check in the endpoint
     response = client.post(
         "/api/v1/transcribe/file",
@@ -156,7 +154,7 @@ def test_rate_limiting(mock_redis, mock_stt_processor_singleton_and_init):
     with patch('src.middlewares.rate_limiter.RateLimiter.__call__') as mock_ratelimiter_call:
         mock_ratelimiter_call.side_effect = HTTPException(status_code=429, detail="Rate limit exceeded")
         audio_buffer, filename = create_dummy_audio()
-        
+
         response = client.post(
             "/api/v1/transcribe/file",
             headers={"X-API-Key": "test_api_key"},

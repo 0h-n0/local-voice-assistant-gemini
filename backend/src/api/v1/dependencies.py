@@ -1,7 +1,8 @@
-from fastapi import Security, HTTPException
+import os
+
+from fastapi import HTTPException, Security
 from fastapi.security import APIKeyHeader, APIKeyQuery
 from starlette.status import HTTP_403_FORBIDDEN
-import os
 
 API_KEY = os.getenv("API_KEY")
 API_KEY_NAME = "X-API-Key"

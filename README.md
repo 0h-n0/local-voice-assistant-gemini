@@ -94,6 +94,43 @@ Connect to the WebSocket at `/api/v1/transcribe/stream` and stream raw audio dat
 websocat "ws://127.0.0.1:8000/api/v1/transcribe/stream?api_key=your_secret_api_key_here"
 ```
 
+## OpenAI LLM Service
+
+The backend also includes an interface to OpenAI's `gpt-5-mini` model for text generation and multi-turn conversations.
+
+### Configuration
+
+Set your OpenAI API key in the `backend/.env` file:
+```bash
+OPENAI_API_KEY="your_openai_key_here"
+```
+
+### Chat Completion
+
+Send a POST request to `/api/v1/llm/chat`.
+
+#### Batch Mode
+```bash
+curl -X POST http://localhost:8000/api/v1/llm/chat \
+-H "Content-Type: application/json" \
+-H "X-API-Key: your_secret_api_key_here" \
+-d '{
+  "messages": [{"role": "user", "content": "What is gpt-5-mini?"}],
+  "stream": false
+}'
+```
+
+#### Streaming Mode (SSE)
+```bash
+curl -X POST http://localhost:8000/api/v1/llm/chat \
+-H "Content-Type: application/json" \
+-H "X-API-Key: your_secret_api_key_here" \
+-d '{
+  "messages": [{"role": "user", "content": "Write a short poem about coding."}],
+  "stream": true
+}'
+```
+
 ## Linting and Quality Checks
 
 To run the project's linters for both backend and frontend from the root directory:
