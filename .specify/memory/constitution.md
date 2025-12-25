@@ -1,17 +1,15 @@
 <!--
 Sync Impact Report:
-- Version change: 0.0.0 -> 1.0.0
+- Version change: 1.0.0 -> 1.1.0
 - Added sections:
-  - Core Principles (7 principles added)
+  - Tooling
+- Modified sections:
   - Development Workflow
-  - Security
-  - Governance
 - Removed sections: None
 - Templates requiring updates:
   - ✅ .specify/templates/plan-template.md
   - ⚠ .specify/templates/spec-template.md (Manual check recommended)
   - ⚠ .specify/templates/tasks-template.md (Manual check recommended)
-  - ⚠ .gemini/commands/*.toml (Manual check recommended for any hardcoded principles)
 - Follow-up TODOs:
   - TODO(RATIFICATION_DATE): Set the initial ratification date for this constitution.
 -->
@@ -40,9 +38,20 @@ The project MUST adhere to Semantic Versioning 2.0.0 (https://semver.org/) for a
 ### VII. Simplicity (YAGNI)
 Always implement the simplest possible solution that meets the current requirements. Avoid adding functionality based on anticipated future needs ("You Ain't Gonna Need It"). Rationale: Prevents over-engineering, reduces complexity, and keeps the codebase lean.
 
+## Tooling
+
+- **Package Management**: This project MUST use `uv` for package management.
+- **Type Checking**: Runtime type checking MUST be implemented using `pydantic`.
+- **Linting**: Code MUST be linted using `ruff`.
+
 ## Development Workflow
 
-All code changes must be submitted via a Pull Request (PR). PRs must be reviewed and approved by at least one other team member before being merged. Automated checks (linting, testing, etc.) must pass before a PR is eligible for review.
+All feature development must follow this process:
+1.  **Branch Creation**: Before starting work on a new feature, a new branch must be created from the main branch.
+2.  **Implementation**: All code must adhere to the principles outlined in this constitution.
+3.  **README Update**: After a feature is implemented, the `README.md` file must be updated to reflect the changes.
+4.  **Pull Request**: A Pull Request (PR) must be created to merge the feature branch into the main branch.
+5.  **Review**: The PR must be reviewed and approved by at least one other team member before being merged. Automated checks (linting, testing, etc.) must pass.
 
 ## Security
 
@@ -56,4 +65,4 @@ This constitution is the supreme governing document for this project. It can onl
 - Any deviation from these principles requires explicit, documented justification and approval.
 - The amendment process requires a PR, review, and approval from the project maintainers.
 
-**Version**: 1.0.0 | **Ratified**: TODO(RATIFICATION_DATE): Set the initial ratification date for this constitution. | **Last Amended**: 2025-12-25
+**Version**: 1.1.0 | **Ratified**: TODO(RATIFICATION_DATE): Set the initial ratification date for this constitution. | **Last Amended**: 2025-12-25
