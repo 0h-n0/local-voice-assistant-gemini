@@ -13,3 +13,7 @@ fastapi-limiter
 soundfile
 pydub
 python-json-logger
+openai
+respx
+ruff
+pytest-asyncio

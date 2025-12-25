@@ -2,6 +2,9 @@
   "name": "local-voice-assistant-gemini",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "frontend"
+  ],
   "scripts": {
     "lint": "npm run lint:backend && npm run lint:frontend",
     "lint:backend": "cd backend && uv run ruff check .",

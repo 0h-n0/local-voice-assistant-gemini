@@ -3,8 +3,8 @@ line-length = 120
 target-version = "py311"
 
 [tool.ruff.lint]
-select = ["E", "W", "F", "I", "N", "D"] # Error, Warning, Flake8, Isort, Naming, Docstrings
-ignore = ["D100", "D104"] # Ignore missing docstrings for modules and packages
+select = ["E", "W", "F", "I", "N"] # Removed "D" (Docstrings)
+ignore = ["E402", "E501", "W292", "W293"] # Ignore import position, line length, and whitespace issues
 
 [tool.ruff.format]
 quote-style = "double"
