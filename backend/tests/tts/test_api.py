@@ -1,24 +1,30 @@
-import os
-from unittest.mock import AsyncMock, patch
-
 import pytest
 from fastapi.testclient import TestClient
+from unittest.mock import AsyncMock, MagicMock
+import os
 
 # Ensure API Key is set for testing
 os.environ["API_KEY"] = "test_secret"
 
 from backend.src.main import app
+from backend.src.api.v1.tts_dependencies import get_synthesizer
 
 client = TestClient(app)
 
 @pytest.fixture
 def mock_synthesizer():
-    # Patching where the endpoint is expected to import/use the synthesizer
-    with patch("backend.src.api.v1.endpoints.tts.synthesizer") as mock:
-        yield mock
+    # Use dependency override instead of patching global variable
+    mock = MagicMock()
+    
+    # Default behavior for batch
+    mock.synthesize = AsyncMock(return_value=b"fake_wav_header_and_data")
+    
+    app.dependency_overrides[get_synthesizer] = lambda: mock
+    yield mock
+    app.dependency_overrides = {}
 
 def test_synthesize_batch_success(mock_synthesizer):
-    mock_synthesizer.synthesize = AsyncMock(return_value=b"fake_wav_header_and_data")
+    # Setup specific mock behavior if needed (already set in fixture)
     
     payload = {
         "text": "こんにちは",
@@ -42,6 +48,7 @@ def test_synthesize_batch_success(mock_synthesizer):
     assert args.style == "Happy"
 
 def test_synthesize_stream_success(mock_synthesizer):
+    # Setup mock generator for streaming
     async def fake_generator(request):
         yield b"chunk1"
         yield b"chunk2"
@@ -60,7 +67,7 @@ def test_synthesize_stream_success(mock_synthesizer):
     )
     
     assert response.status_code == 200
-    # Verify chunks are received
+    # Verify chunks are received (TestClient concatenates streaming response content usually)
     assert b"chunk1" in response.content
     assert b"chunk2" in response.content
 
