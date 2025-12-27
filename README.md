@@ -154,10 +154,37 @@ curl -X POST http://localhost:8000/api/v1/tts/synthesize \
 
 Get available models and supported styles.
 
-```bash
 curl -X GET http://localhost:8000/api/v1/tts/models \
   -H "X-API-Key: your_secret_api_key_here"
+
+## Voice Orchestrator API
+
+The Voice Orchestrator combines STT, LLM, and TTS into a single low-latency loop via WebSockets.
+
+### Real-time Voice Interaction
+
+Connect to the WebSocket at `/api/v1/orchestrator/ws`.
+
+```bash
+# Using websocat (binary PCM 16kHz mono)
+websocat "ws://localhost:8000/api/v1/orchestrator/ws?api_key=your_secret_api_key_here"
 ```
+
+The protocol supports interleaved JSON control messages and binary audio chunks.
+
+**Handshake Config (JSON):**
+```json
+{
+  "type": "config",
+  "payload": {
+    "tts_voice": "Airi",
+    "tts_style": "Happy"
+  }
+}
+```
+
+**Barge-in (JSON):**
+Send `{"type": "speech_start"}` to interrupt the AI.
 
 ## Linting and Quality Checks
 
