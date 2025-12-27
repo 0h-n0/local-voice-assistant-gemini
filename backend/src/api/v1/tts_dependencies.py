@@ -1,6 +1,8 @@
 from functools import lru_cache
+
 from backend.src.core.tts.model_manager import ModelManager
 from backend.src.core.tts.synthesizer import Synthesizer
+
 
 @lru_cache()
 def get_model_manager() -> ModelManager:

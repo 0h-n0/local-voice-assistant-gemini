@@ -1,10 +1,10 @@
 import asyncio
 import logging
-import time
 import re
-import numpy as np
+import time
 from typing import AsyncGenerator, List, Tuple
 
+import numpy as np
 from backend.src.core.tts.model_manager import ModelManager
 from backend.src.models.tts import TTSRequest
 from backend.src.utils.audio import create_wav_header

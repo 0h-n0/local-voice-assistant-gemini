@@ -1,14 +1,13 @@
 import logging
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import Response, StreamingResponse
-
 from backend.src.api.v1.dependencies import get_api_key
-from backend.src.api.v1.tts_dependencies import get_synthesizer, get_model_manager
+from backend.src.api.v1.tts_dependencies import get_model_manager, get_synthesizer
 from backend.src.core.tts.model_manager import ModelManager
 from backend.src.core.tts.synthesizer import Synthesizer
 from backend.src.models.tts import TTSRequest, VoiceModel
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import Response, StreamingResponse
 
 router = APIRouter()
 logger = logging.getLogger(__name__)

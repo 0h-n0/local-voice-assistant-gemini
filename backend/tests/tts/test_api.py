@@ -1,13 +1,14 @@
+import os
+from unittest.mock import AsyncMock, MagicMock
+
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import AsyncMock, MagicMock
-import os
 
 # Ensure API Key is set for testing
 os.environ["API_KEY"] = "test_secret"
 
-from backend.src.main import app
 from backend.src.api.v1.tts_dependencies import get_synthesizer
+from backend.src.main import app
 
 client = TestClient(app)
 
