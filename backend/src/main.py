@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api.v1.endpoints import llm, stt
+from .api.v1.endpoints import llm, stt, tts
 from .middlewares.logging import LoggingMiddleware
 from .middlewares.metrics import (  # Import MetricsMiddleware class and metrics_endpoint function
     MetricsMiddleware,
@@ -40,3 +40,4 @@ app.add_route("/metrics", metrics_endpoint)
 
 app.include_router(stt.router, prefix="/api/v1", tags=["stt"])
 app.include_router(llm.router, prefix="/api/v1/llm", tags=["llm"])
+app.include_router(tts.router, prefix="/api/v1/tts", tags=["tts"])

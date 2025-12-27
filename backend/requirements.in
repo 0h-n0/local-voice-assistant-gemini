@@ -12,6 +12,7 @@ prometheus_client
 fastapi-limiter
 soundfile
 pydub
+style-bert-vits2
 python-json-logger
 openai
 respx

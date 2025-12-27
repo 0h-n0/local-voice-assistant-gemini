@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: Japanese TTS API
+  version: 1.0.0
+paths:
+  /api/v1/tts/synthesize:
+    post:
+      summary: Synthesize Japanese text to speech
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TTSRequest'
+      responses:
+        '200':
+          description: Successful synthesis
+          content:
+            audio/wav:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+  /api/v1/tts/models:
+    get:
+      summary: List available voice models
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: List of models
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VoiceModel'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    TTSRequest:
+      type: object
+      required: [text]
+      properties:
+        text:
+          type: string
+          maxLength: 500
+        model_id:
+          type: string
+        style:
+          type: string
+        style_weight:
+          type: number
+        speed:
+          type: number
+          minimum: 0.5
+          maximum: 2.0
+        pitch:
+          type: number
+        stream:
+          type: boolean
+    VoiceModel:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        styles:
+          type: array
+          items:
+            type: string
+        sample_rate:
+          type: integer

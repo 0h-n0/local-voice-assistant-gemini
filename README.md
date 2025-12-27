@@ -131,6 +131,34 @@ curl -X POST http://localhost:8000/api/v1/llm/chat \
 }'
 ```
 
+## Japanese TTS API
+
+The backend includes a Japanese Text-to-Speech (TTS) API using `Style-Bert-VITS2`.
+
+### Synthesize Text
+
+Send a POST request to `/api/v1/tts/synthesize` to generate audio.
+
+```bash
+curl -X POST http://localhost:8000/api/v1/tts/synthesize \
+  -H "X-API-Key: your_secret_api_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "こんにちは",
+    "style": "Happy",
+    "stream": false
+  }' --output output.wav
+```
+
+### List Models
+
+Get available models and supported styles.
+
+```bash
+curl -X GET http://localhost:8000/api/v1/tts/models \
+  -H "X-API-Key: your_secret_api_key_here"
+```
+
 ## Linting and Quality Checks
 
 To run the project's linters for both backend and frontend from the root directory:
