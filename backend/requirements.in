@@ -14,7 +14,6 @@ soundfile
 pydub
 style-bert-vits2
 python-json-logger
-websockets
 openai
 respx
 ruff
