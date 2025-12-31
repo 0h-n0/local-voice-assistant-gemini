@@ -1,7 +1,5 @@
 from typing import Any, Dict, Optional
-
 from pydantic import BaseModel, Field
-
 
 class OrchestratorConfig(BaseModel):
     stt_model: Optional[str] = Field(None, description="STT model to use")
